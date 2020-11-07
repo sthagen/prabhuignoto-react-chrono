@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { Scroll } from '../../models/TimelineCollnModel';
+import { Scroll } from '../../models/TimelineHorizontalModel';
 import { TimelineMode } from '../../models/TimelineModel';
 
 let useNewScrollPosition: (
@@ -43,7 +43,7 @@ useNewScrollPosition = function (mode: TimelineMode, itemWidth?: number) {
         } else if (rightGap <= itemWidth && rightGap >= 0) {
           setNewOffset(timelinePointOffset - itemWidth);
         }
-      } else if (mode === 'VERTICAL' || mode === 'TREE') {
+      } else if (mode === 'VERTICAL' || mode === 'VERTICAL_ALTERNATING') {
         if (!timelineContentOffset || !timelineContentHeight) {
           return;
         }

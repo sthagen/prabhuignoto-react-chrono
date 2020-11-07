@@ -1,7 +1,13 @@
 module.exports = {
-  preset: "ts-jest",
-  testEnvironment: "node",
-  setupFilesAfterEnv: ["<rootDir>/src/setuptests.ts"],
+  preset: 'ts-jest/presets/js-with-babel',
+  testEnvironment: 'jsdom',
+  setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
+  modulePathIgnorePatterns: ['cypress'],
   collectCoverage: true,
-  coverageDirectory: "<rootDir>/coverage",
+  coverageReporters: ['json', 'html'],
+  globals: {
+    'ts-jest': {
+      tsConfigFile: './tsconfig.json',
+    },
+  },
 };

@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test tree branch render 1`] = `
+<div
+  class="test-class  vertical-item-row css-43ivcr"
+  data-testid="vertical-item-row"
+  role="listitem"
+>
+  <div
+    class="test-class css-1nwuoxl"
+  >
+    <div
+      class="timeline-item-title active css-am6i6v"
+    >
+      branch title
+    </div>
+  </div>
+  <div
+    class="test-class card-content-wrapper  css-z17d9y"
+  >
+    <section
+      class="timeline-card-content active css-1yluw9g"
+      tabindex="0"
+    >
+      <header
+        class="css-1ago99h"
+      >
+        <p
+          class="card-sub-title css-1pdes2h"
+        >
+          Tree branch test
+        </p>
+      </header>
+      <div
+        aria-expanded="false"
+        class="show-less card-description css-uerp6t"
+      >
+        <p
+          class=" css-1jsxpv8"
+        />
+      </div>
+    </section>
+  </div>
+  <div
+    class="test-class css-vn8ri6"
+    data-testid="tree-leaf"
+    role="button"
+  >
+    <div
+      aria-label="select timeline"
+      class="test-class timeline-vertical-circle css-kooiip"
+      data-testid="tree-leaf-click"
+      role="button"
+    >
+      <div
+        class="active css-gp0zpt"
+      />
+    </div>
+  </div>
+</div>
+`;

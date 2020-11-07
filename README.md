@@ -2,10 +2,12 @@
   <img src="./readme-assets/social-logo-small.png" />
   
   <br/>
+  <br/>
 
   [![Build Status](https://dev.azure.com/prabhummurthy/react-chrono/_apis/build/status/prabhuignoto.react-chrono?branchName=master)](https://dev.azure.com/prabhummurthy/react-chrono/_build/latest?definitionId=7&branchName=master)
   [![DeepScan grade](https://deepscan.io/api/teams/10074/projects/13644/branches/234929/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=10074&pid=13644&bid=234929)
   [![Codacy Badge](https://app.codacy.com/project/badge/Grade/f2e24a98defd4e4fa7f6f24d86b8dab5)](https://www.codacy.com/manual/prabhuignoto/react-chrono?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=prabhuignoto/react-chrono&amp;utm_campaign=Badge_Grade)
+  [![react-chrono](https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/simple/8zb5a5&style=flat&logo=cypress)](https://dashboard.cypress.io/projects/8zb5a5/runs)
   ![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/prabhuignoto/react-chrono?style=flat)
   [![Depfu](https://badges.depfu.com/badges/48a23a6a830309649b7e516467cd9a48/overview.svg)](https://depfu.com/github/prabhuignoto/react-chrono?project_id=15325)
   ![https://badgen.net/bundlephobia/min/react](https://badgen.net/bundlephobia/min/react)
@@ -22,13 +24,12 @@
 
 <h2>Features</h2>
 
-- 🚥 Render timelines in three different modes ([Horizontal](#-getting-started), [Vertical](#vertical-mode), [Tree](#tree)).
-- 🌲&nbsp; Use the [Tree](#tree) mode to layout the timeline cards vertically in a tree like fashion.
+- 🚥 Render timelines in three different modes ([Horizontal](#-getting-started), [Vertical](#vertical-mode), [Vertical-Alternating](#vertical-alternating)).
 - 📺&nbsp; Auto play the timeline with the [slideshow](#slideshow-mode) mode.
 - 🖼️&nbsp; [Display Images & Videos](#media) in the timeline with ease.
 - ⌨&nbsp; [Keyboard accessible](#keyboard-navigation).
+- 🔧&nbsp; [Render](#rendering-custom-content) custom content easily.
 - ⚡&nbsp; Data driven API.
-- 🔧&nbsp; Optimized to render images & videos efficiently on (Tree & Vertical mode).
 - 🎨&nbsp; [Customize](#theme) colors with ease.
 - 💪&nbsp; Built with [Typescript](https://www.typescriptlang.org/).
 - 🎨&nbsp; Styled with [emotion](https://emotion.sh).
@@ -38,18 +39,22 @@
 - [⚡ Installation](#-installation)
 - [Getting Started](#getting-started)
   - [Vertical Mode](#vertical-mode)
-  - [Tree](#tree)
+  - [Vertical Alternating](#vertical-alternating)
   - [Slideshow](#slideshow)
 - [Props](#props)
   - [Mode](#mode)
   - [Timeline item Model](#timeline-item-model)
   - [Keyboard Navigation](#keyboard-navigation)
+  - [Scrollable](#scrollable)
   - [Media](#media)
+  - [Rendering custom content](#rendering-custom-content)
+  - [Slideshow mode](#slideshow-mode)
   - [Item Width](#item-width)
   - [Theme](#theme)
 - [📦 CodeSandbox Examples](#-codesandbox-examples)
-- [📦 Build Setup](#-build-setup)
-- [🔨 Contributing](#-contributing)
+- [🔨 Build Setup](#-build-setup)
+- [🧪 Tests](#-tests)
+- [🤝 Contributing](#-contributing)
 - [🧱 Built with](#-built-with)
 - [🎯 What's coming next](#-whats-coming-next)
 - [Meta](#meta)
@@ -73,8 +78,8 @@ When no `mode` is specified, the component defaults to `HORIZONTAL` mode. Please
   const Home = () => {
     const items = [{
       title: "May 1940",
-      contentTitle: "Dunkirk",
-      contentText:"Men of the British Expeditionary Force (BEF) wade out to..",
+      cardTitle: "Dunkirk",
+      cardSubtitle:"Men of the British Expeditionary Force (BEF) wade out to..",
       media: {
         type: "IMAGE",
         source: {
@@ -85,7 +90,7 @@ When no `mode` is specified, the component defaults to `HORIZONTAL` mode. Please
 
     return (
       <div style={{ width: "500px", height: "400px" }}>
-        <Chrono items={items} cardHeight={300} />
+        <Chrono items={items} />
       </div>
     )
   }
@@ -108,15 +113,15 @@ To render the timeline vertically use the `VERTICAL` mode
 
 ![vertical-basic](./readme-assets/vertical-basic.png)
 
-### Tree
+### Vertical Alternating
 
-In `Tree` mode the timeline is rendered vertically with cards alternating between left and right side.
+In `VERTICAL_ALTERNATING` mode the timeline is rendered vertically with cards alternating between left and right side.
 
 ```sh
   <div style={{ width: "500px", height: "950px" }}>
     <chrono
       items={items}
-      mode="TREE"
+      mode="VERTICAL_ALTERNATING"
     />
   </div>
 ```
@@ -125,14 +130,14 @@ In `Tree` mode the timeline is rendered vertically with cards alternating betwee
 
 ### Slideshow
 
-Play the timeline automatically with the `slideShow` mode.
+Play the timeline automatically with the `slideShow` mode. This prop enables the play button on the ui controls.
 
 ```sh
   <div style={{ width: "500px", height: "950px" }}>
     <chrono
       items={items}
       slideShow
-      mode="TREE"
+      mode="VERTICAL_ALTERNATING"
     />
   </div>
 ```
@@ -141,21 +146,23 @@ Play the timeline automatically with the `slideShow` mode.
 
 ## Props
 
-| name              | description                                                                           | default      |
-| ----------------- | ------------------------------------------------------------------------------------- | ------------ |
-| mode              | sets the mode of the component. can be `HORIZONTAL`, `VERTICAL` or `TREE` | `HORIZONTAL`             |
-| items             | collection of [Timeline Item Model](#timeline-item-model).                            | []           |
-| disableNavOnKey   | Disables keyboard navigation.                                                         | false        |
-| slideShow         | Enables slideshow control.                                                            | false        |
-| slideItemDuration | The amount of delay in `ms` for the timeline points in `slideshow` mode.              | 5000         |
-| itemWidth         | width of the timeline section in `HORIZONTAL` mode.                                   | 300          |
-| hideControls      | hides the navigation controls.                                                        | 300          |
-| cardHeight        | sets the minimum height of the timeline card.                                         | 250          |
-| theme             | prop to customize the colors.                                                         |              |
+| name                    | description                                                                           | default      |
+| -----------------       | ------------------------------------------------------------------------------------- | ------------ |
+| mode                    | sets the mode of the component. can be `HORIZONTAL`, `VERTICAL` or `VERTICAL_ALTERNATING` | `HORIZONTAL`             |
+| items                   | collection of [Timeline Item Model](#timeline-item-model).                            | []           |
+| disableNavOnKey         | disables the keyboard navigation.                                                     | false        |
+| slideShow               | enables the slideshow control.                                                        | false        |
+| slideItemDuration       | duration (in ms), the timeline card is active during  a `slideshow`.                  | 5000         |
+| itemWidth               | width of the timeline section in `HORIZONTAL` mode.                                   | 300          |
+| hideControls            | hides the navigation controls.                                                        | 300          |
+| cardHeight              | sets the minimum height of the timeline card.                                         | 250          |
+| scrollable              | makes the timeline [scrollable](#scrollable) (applicable for `VERTICAL` & `VERTICAL_ALTERNATING`).   | true         |
+| cardPositionHorizontal  | positions the card in `HORIZONTAL` mode. can be either `TOP` or `BOTTOM`              |              |
+| theme                   | prop to customize the colors.                                                         |              |
 
 ### Mode
 
-`react-chrono` supports three modes `HORIZONTAL`, `VERTICAL` and `TREE`. No additional setting is required.
+`react-chrono` supports three modes `HORIZONTAL`, `VERTICAL` and `VERTICAL_ALTERNATING`. No additional setting is required.
 
 ```sh
   <chrono items={items} mode="HORIZONTAL" />
@@ -166,7 +173,7 @@ Play the timeline automatically with the `slideShow` mode.
 ```
 
 ```sh
-  <chrono items={items} mode="TREE" />
+  <chrono items={items} mode="VERTICAL_ALTERNATING" />
 ```
 
 ### Timeline item Model
@@ -174,15 +181,15 @@ Play the timeline automatically with the `slideShow` mode.
 | name                 | description                                  | type   |
 |----------------------|----------------------------------------------|--------|
 | title                | title of the timeline item                   | String |
-| contentTitle         | title that is displayed on the timeline card | String |
-| contentText          | text displayed in the timeline card          | String |
-| contentDetailedText  | detailed text displayed in the timeline card | String |
+| cardTitle         | title that is displayed on the timeline card | String |
+| cardSubtitle          | text displayed in the timeline card          | String |
+| cardDetailedText  | detailed text displayed in the timeline card | String |
 | media                | media object to set image or video.          | Object |
 
 ```sh
 {
   title: "May 1940",
-  contentTitle: "Dunkirk",
+  cardTitle: "Dunkirk",
   media: {
     name: "dunkirk beach",
     source: {
@@ -190,7 +197,7 @@ Play the timeline automatically with the `slideShow` mode.
     },
     type: "IMAGE"
   },
-  contentText:
+  cardSubtitle:
     "Men of the British Expeditionary Force (BEF) wade out to a destroyer during the evacuation from Dunkirk."
 }
 ```
@@ -200,13 +207,27 @@ Play the timeline automatically with the `slideShow` mode.
 The timeline can be navigated via keyboard.
 
 - For `HORIZONTAL` mode use your <kbd>LEFT</kbd> <kbd>RIGHT</kbd> arrow keys for navigation.
-- For `VERTICAL` or `TREE` mode, the timeline can be navigated via the <kbd>UP</kbd> <kbd>DOWN</kbd> arrow keys.
+- For `VERTICAL` or `VERTICAL_ALTERNATING` mode, the timeline can be navigated via the <kbd>UP</kbd> <kbd>DOWN</kbd> arrow keys.
 - To easily jump to the first item or the last item in the timeline, use <kbd>HOME</kbd> or <kbd>END</kbd> keys.
 
 To disable keyboard navigation set `disableNavOnKey` to true.
 
 ```sh
 <chrono items={items} disableNavOnKey />
+```
+
+### Scrollable
+
+With the scrollable prop, you can enable scrolling on both `VERTICAL` and `VERTICAL_ALTERNATING` modes.
+
+```sh
+  <chrono items={items} scrollable />
+```
+
+The scrollbar is not shown by default. To enable the scrollbar, pass an object with prop `scrollbar` to `scrollable` prop.
+
+```sh
+  <chrono items={items} scrollable={{scrollbar: true}} />
 ```
 
 ### Media
@@ -220,7 +241,7 @@ Both images and videos can be embedded in the timeline. Just add the `media` att
 ```sh
 {
   title: "May 1940",
-  contentTitle: "Dunkirk",
+  cardTitle: "Dunkirk",
   media: {
     name: "dunkirk beach",
     source: {
@@ -240,7 +261,7 @@ Videos start playing automatically when active and will be automatically paused 
 ```sh
 {
   title: "7 December 1941",
-  contentTitle: "Pearl Harbor",
+  cardTitle: "Pearl Harbor",
   media: {
     source: {
       url: "/pearl-harbor.mp4",
@@ -250,6 +271,46 @@ Videos start playing automatically when active and will be automatically paused 
     name: "Pearl Harbor"
   }
 }
+```
+
+![media](./readme-assets/media.png)
+
+### Rendering custom content
+
+The component also supports embedding custom content in the `Timeline` cards.
+
+To insert custom content, just pass the blocked elements between the `Chrono` tags.
+
+For e.g the below snippet will create 2 timeline items. Each `div` element is automatically converted into a timeline item and inserted into the timeline card.
+The [items](#timeline-item-model) collection is completely optional and custom rendering is supported on all 3 [modes](#mode).
+
+```sh
+  <Chrono mode="VERTICAL">
+    <div>
+      <p>Lorem Ipsum. Lorem Ipsum. Lorem Ipsum</p>
+    </div>
+    <div>
+      <img src="<url to  a nice image" />
+    </div>
+  </Chrono>
+```
+
+The items collection will also work nicely with any custom content that is passed. The following snippet sets the the `title` and `cardTitle` for the custom contents.
+
+```sh
+  const items = [
+    {title: "Timeline title 1", cardTitle:  "Card Title 1"},
+    {title: "Timeline title 2", cardTitle:  "Card Title 2"}
+  ];
+
+  <Chrono mode="VERTICAL" items={items}>
+    <div>
+      <p>Lorem Ipsum. Lorem Ipsum. Lorem Ipsum</p>
+    </div>
+    <div>
+      <img src="<url to  a nice image" />
+    </div>
+  </Chrono>
 ```
 
 ### Slideshow mode
@@ -271,18 +332,17 @@ The `itemWidth` prop can be used to set the width of each individual timeline se
 Customize colors with `theme` prop.
 
 ```sh
-<chrono items={items}  titlePosition="BOTTOM" theme={{primary: "red", secondary: "blue" }} />
+<chrono items={items}  theme={{primary: "red", secondary: "blue" }} />
 ```
 
 ## 📦 CodeSandbox Examples
 
-- [Horizontal Basic](https://codesandbox.io/s/condescending-swirles-xodxo?file=/src/App.js)
-- [Tree](https://codesandbox.io/s/react-chrono-tree-text-xtksq)
-- [Tree with Images](https://codesandbox.io/s/react-chrono-tree-image-uh2nz)
-- [Vertical basic](https://codesandbox.io/s/react-chrono-tree-text-slide-zytpi?file=/src/App.js)
-- [Vertical mode with Mixed content](https://codesandbox.io/s/react-chrono-tree-horizontal-wdqk3)
+- [Horizontal Basic](https://codesandbox.io/s/keen-shannon-gtjwn?file=/src/App.js)
+- [Vertical basic](https://codesandbox.io/s/react-chrono-vertical-basic-0rm1o?file=/src/App.js)
+- [Vertical Alternating](https://codesandbox.io/s/react-chrono-tree-text-1fcs3?file=/src/App.js)
+- [Vertical All Images](https://codesandbox.io/s/react-chrono-tree-vertical-images-b5zri?file=/src/App.js)
 
-## 📦 Build Setup
+## 🔨 Build Setup
 
 ``` bash
 # install dependencies
@@ -304,7 +364,17 @@ yarn run lint
 yarn run rollup
 ```
 
-## 🔨 Contributing
+## 🧪 Tests
+
+```sh
+  # run unit tests
+  yarn run test
+
+  # run cypress tests
+  yarn run cypress:test
+```
+
+## 🤝 Contributing
 
 1. [Fork it](https://github.com/prabhuignoto/react-chrono/fork)
 2. Create your feature branch (`git checkout -b new-feature`)
@@ -324,11 +394,14 @@ yarn run rollup
 
 ## Meta
 
-Prabhu Murthy – [@prabhumurthy2](https://twitter.com/prabhumurthy2) – prabhu.m.murthy@gmail.com
+Huge thanks to [BrowserStack](https://www.browserstack.com/) for the Open Source License!
 
 Distributed under the MIT license. See `LICENSE` for more information.
 
-[https://github.com/prabhuingoto/](https://github.com/prabhuingoto/)
+Prabhu Murthy – [@prabhumurthy2](https://twitter.com/prabhumurthy2) – prabhu.m.murthy@gmail.com
+[https://github.com/prabhuignoto](https://github.com/prabhuignoto)
+
+  <a href="https://www.buymeacoffee.com/prabhuignoto" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-red.png" alt="Buy Me A Coffee" height="41" width="174" ></a>
 
 <!-- Markdown link & img dfn's -->
 

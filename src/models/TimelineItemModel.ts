@@ -1,6 +1,7 @@
 import { Theme } from './Theme';
-import { Scroll } from './TimelineCollnModel';
+import { Scroll } from './TimelineHorizontalModel';
 import { Media } from './TimelineMediaModel';
+import { TimelineMode } from './TimelineModel';
 /**
  *
  *
@@ -9,13 +10,13 @@ import { Media } from './TimelineMediaModel';
  */
 export interface TimelineItemModel {
   active?: boolean;
-  contentDetailedText?: string;
-  contentText: string;
-  contentTitle?: string;
+  cardDetailedText?: string;
+  cardSubtitle?: string;
+  cardTitle?: string;
   id?: string;
   media?: Media;
   position?: string;
-  title: string;
+  title?: string;
   visible?: boolean;
 }
 
@@ -26,7 +27,7 @@ export interface TimelineCardModel extends TimelineItemModel {
     timelinePointHeight,
     timelineContentHeight,
   }: Partial<Scroll>) => void;
-  mode: 'HORIZONTAL' | 'VERTICAL' | 'TREE';
+  mode: TimelineMode;
   onClick: (id?: string) => void;
   slideShowRunning?: boolean;
   theme?: Theme;
@@ -34,4 +35,6 @@ export interface TimelineCardModel extends TimelineItemModel {
   cardHeight?: number;
   slideItemDuration?: number;
   onElapsed?: (id?: string) => void;
+  customContent?: React.ReactNode | React.ReactNode[];
+  hasFocus?: boolean;
 }

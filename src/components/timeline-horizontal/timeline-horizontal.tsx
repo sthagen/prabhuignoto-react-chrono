@@ -1,12 +1,13 @@
-import React from 'react';
-import { TimelineCollectionModel } from '../../models/TimelineCollnModel';
-import TimelineItem from '../timeline-elements/timeline-card/timeline-card';
+import cls from 'classnames';
+import React, { ReactNode, useMemo } from 'react';
+import { TimelineHorizontalModel } from '../../models/TimelineHorizontalModel';
+import TimelineCard from '../timeline-elements/timeline-card/timeline-horizontal-card';
 import {
-  TimelineCollectionWrapper,
+  TimelineHorizontalWrapper,
   TimelineItemWrapper,
 } from './timeline-horizontal.styles';
 
-const TimelineCollection: React.FunctionComponent<TimelineCollectionModel> = ({
+const TimelineHorizontal: React.FunctionComponent<TimelineHorizontalModel> = ({
   items,
   itemWidth,
   handleItemClick,
@@ -18,19 +19,28 @@ const TimelineCollection: React.FunctionComponent<TimelineCollectionModel> = ({
   cardHeight,
   slideItemDuration,
   onElapsed,
-}: TimelineCollectionModel) => {
+  contentDetailsChildren: children,
+  hasFocus,
+}: TimelineHorizontalModel) => {
+  const wrapperClass = useMemo(
+    () => cls(mode.toLowerCase(), 'timeline-horz-container'),
+    [mode],
+  );
   return (
-    <TimelineCollectionWrapper
-      className={mode.toLowerCase()}
+    <TimelineHorizontalWrapper
+      className={wrapperClass}
       data-testid="timeline-collection"
     >
-      {items.map((item) => (
+      {items.map((item, index) => (
         <TimelineItemWrapper
           key={item.id}
           width={itemWidth}
-          className={`${mode.toLowerCase()} ${item.visible ? 'visible' : ''}`}
+          className={cls(
+            item.visible ? 'visible' : '',
+            'timeline-horz-item-container',
+          )}
         >
-          <TimelineItem
+          <TimelineCard
             {...item}
             onClick={handleItemClick}
             autoScroll={autoScroll}
@@ -41,11 +51,13 @@ const TimelineCollection: React.FunctionComponent<TimelineCollectionModel> = ({
             cardHeight={cardHeight}
             slideItemDuration={slideItemDuration}
             onElapsed={onElapsed}
+            customContent={children ? (children as ReactNode[])[index] : null}
+            hasFocus={hasFocus}
           />
         </TimelineItemWrapper>
       ))}
-    </TimelineCollectionWrapper>
+    </TimelineHorizontalWrapper>
   );
 };
 
-export default TimelineCollection;
+export default TimelineHorizontal;

@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 const ModeWrapper = styled.div`
-  width: 850px;
+  width: 950px;
   position: relative;
   margin-bottom: 3rem;
   border-radius: 10px;
@@ -51,7 +51,7 @@ export const ComponentContainer = styled.div<{ type?: string }>`
 
 export const ComponentContainerTree = styled.div<{ type?: string }>`
   border-radius: 4px;
-  height: 800px;
+  /* height: 800px; */
   margin: 0 auto;
   margin-top: 1rem;
   padding: 1rem 0;
@@ -61,7 +61,7 @@ export const ComponentContainerTree = styled.div<{ type?: string }>`
       case 'desktop':
         return `height: 600px; width: 75%;`;
       case 'big-screen':
-        return `height: 750px; width: 85%;`;
+        return `height: 850px; width: 100%;`;
       case 'tablet':
         return `height: 850px; width: 100%;`;
       case 'mobile':
@@ -166,3 +166,10 @@ export const SandBox = styled.div`
   justify-content: flex-start;
   margin-left: auto;
 `;
+
+export const ComponentLinks = styled.ul`
+  list-style: none;
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+`

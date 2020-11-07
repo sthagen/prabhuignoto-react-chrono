@@ -1,6 +1,12 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { CardMediaModel } from '../../../models/TimelineMediaModel';
-import { MemoContentText, MemoTitle } from '../memoized';
+import { MemoSubTitle, MemoTitle } from '../memoized';
 import {
   CardImage,
   CardVideo,
@@ -23,6 +29,8 @@ const CardMedia: React.FunctionComponent<CardMediaModel> = ({
   content,
   media,
   slideshowActive,
+  hideMedia = false,
+  cardHeight,
 }: CardMediaModel) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [loadFailed, setLoadFailed] = useState(false);
@@ -34,10 +42,10 @@ const CardMedia: React.FunctionComponent<CardMediaModel> = ({
 
     if (active) {
       // play the video when active
-      videoRef.current?.play();
+      videoRef.current && videoRef.current.play();
     } else {
       // pause the video when not active
-      videoRef.current?.pause();
+      videoRef.current && videoRef.current.pause();
     }
   }, [active]);
 
@@ -60,68 +68,85 @@ const CardMedia: React.FunctionComponent<CardMediaModel> = ({
     ({ message }: ErrorMessageModel) => <ErrorMessage>{message}</ErrorMessage>,
   );
 
+  const Video = useMemo(() => {
+    return (
+      <CardVideo
+        controls
+        autoPlay={active}
+        ref={videoRef}
+        onLoadedData={handleMediaLoaded}
+        onPlay={() =>
+          onMediaStateChange({
+            id,
+            paused: false,
+            playing: true,
+          })
+        }
+        onPause={() =>
+          onMediaStateChange({
+            id,
+            paused: true,
+            playing: false,
+          })
+        }
+        onEnded={() =>
+          onMediaStateChange({
+            id,
+            paused: false,
+            playing: false,
+          })
+        }
+        onError={handleError}
+      >
+        <source src={media.source.url}></source>
+      </CardVideo>
+    );
+  }, [active]);
+
+  const Image = useMemo(() => {
+    return (
+      <CardImage
+        src={media.source.url}
+        mode={mode}
+        onLoad={handleMediaLoaded}
+        onError={handleError}
+        visible={mediaLoaded}
+        active={active}
+        alt={media.name}
+      />
+    );
+  }, [active]);
+
   ErrorMessageMem.displayName = 'Error Message';
 
   return (
-    <MediaWrapper
-      theme={theme}
-      active={active}
-      mode={mode}
-      slideShowActive={slideshowActive}
-    >
-      {media.type === 'VIDEO' &&
-        (!loadFailed ? (
-          <CardVideo
-            controls
-            autoPlay={active}
-            ref={videoRef}
-            onLoadedData={handleMediaLoaded}
-            onPlay={() =>
-              onMediaStateChange({
-                id,
-                paused: false,
-                playing: true,
-              })
-            }
-            onPause={() =>
-              onMediaStateChange({
-                id,
-                paused: true,
-                playing: false,
-              })
-            }
-            onEnded={() =>
-              onMediaStateChange({
-                id,
-                paused: false,
-                playing: false,
-              })
-            }
-            onError={handleError}
-          >
-            <source src={media.source.url}></source>
-          </CardVideo>
-        ) : (
-          <ErrorMessageMem message="Failed to load the video" />
-        ))}
-      {media.type === 'IMAGE' &&
-        (!loadFailed ? (
-          <CardImage
-            src={media.source.url}
-            mode={mode}
-            onLoad={handleMediaLoaded}
-            onError={handleError}
-            visible={mediaLoaded}
-            active={active}
-          />
-        ) : (
-          <ErrorMessageMem message="Failed to load the image." />
-        ))}
+    <>
+      <MediaWrapper
+        theme={theme}
+        active={active}
+        mode={mode}
+        slideShowActive={slideshowActive}
+        className="card-media-wrapper"
+        cardHeight={cardHeight}
+      >
+        {media.type === 'VIDEO' &&
+          (!loadFailed ? (
+            Video
+          ) : (
+            <ErrorMessageMem message="Failed to load the video" />
+          ))}
+        {media.type === 'IMAGE' &&
+          (!loadFailed ? (
+            Image
+          ) : (
+            <ErrorMessageMem message="Failed to load the image." />
+          ))}
+      </MediaWrapper>
       <MediaDetailsWrapper mode={mode}>
         <MemoTitle title={title} theme={theme} active={active} />
-        <MemoContentText content={content} />
+        <MemoSubTitle content={content} />
       </MediaDetailsWrapper>
-    </MediaWrapper>
+    </>
   );
 };
 

@@ -1,22 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import Chrono from '../components';
+import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
 import { TimelineItemModel } from '../models/TimelineItemModel';
 import {
   HorizontalBasic,
-  HorizontalSlideshow,
   VerticalBasic,
+  VerticalCustomContent,
   VerticalTree,
-  VerticalTreeMixed,
-  VerticalTreeSlideshow,
+  VerticalTreeMixed
 } from './app-samples';
 import './App.css';
 import {
-  ComponentContainer,
-  Description,
-  DescriptionContent,
-  DescriptionHeader,
-  Horizontal,
-  Wrapper,
+  ComponentLinks,
+  Wrapper
 } from './App.styles';
 import data from './data';
 
@@ -25,11 +20,11 @@ const NewDemo: React.FunctionComponent = () => {
 
   useEffect(() => {
     const newItems = data.map(
-      ({ title, contentTitle, contentText, contentDetailedText, id }) => ({
+      ({ title, cardTitle, cardSubtitle, cardDetailedText, id }) => ({
         title,
-        contentTitle,
-        contentText,
-        contentDetailedText,
+        cardTitle,
+        cardSubtitle,
+        cardDetailedText,
         id,
       }),
     );
@@ -39,34 +34,56 @@ const NewDemo: React.FunctionComponent = () => {
   return (
     <Wrapper>
       <h3>Timeline of World War 2</h3>
-      <>
-        {/* Horizontal with Media */}
-        {/* {items.length > 0 && (
-          <HorizontalBasic items={items} type="big-screen" />
-        )} */}
-
-        {/* Vertical with no Media */}
-        {/* {items.length > 0 && (
-            <VerticalBasic type={"big-screen"} items={items} />
-          )} */}
-
-        {/* Tree Mode */}
-        {items.length > 0 && <VerticalTree type={'big-screen'} items={items} />}
-
-        {/* mixed mode */}
-        {/* {items.length > 0 && <VerticalTreeMixed type={"big-screen"} />} */}
-
-        {/* Horizontal Slideshow */}
-        {/* {<HorizontalSlideshow type={"big-screen"} />} */}
-
-        {/* Tree Slideshow */}
-        {/* {items.length > 0 && (
-          <VerticalTreeSlideshow
-            type={'big-screen'}
-            cardHeight={250}
-          />
-        )} */}
-      </>
+      <BrowserRouter>
+      <header>
+        <ComponentLinks>
+          <li>
+            <Link to="/vertical-basic">Vertical Basic</Link>
+          </li>
+          <li>
+            <Link to="/vertical-alternating">Vertical Alternating</Link>
+          </li>
+          <li>
+            <Link to="/vertical-alternating-mixed">Vertical Alternating Mixed Data</Link>
+          </li>
+          <li>
+            <Link to="/horizontal">Horizontal Basic</Link>
+          </li>
+          <li>
+            <Link to="/vertical-custom">Vertical  Custom contents</Link>
+          </li>
+        </ComponentLinks>
+      </header>
+      <section>
+        <Switch>
+          <Route path="/vertical-basic">
+          {/* Vertical with no Media */}
+          {items.length > 0 && (
+              <VerticalBasic type={"big-screen"} items={items} />
+            )}
+          </Route>
+          <Route path="/vertical-alternating-mixed">
+            {items.length > 0 && <VerticalTreeMixed type={"big-screen"} />} 
+          </Route>
+          <Route path="/vertical-alternating">
+            {items.length > 0 && <VerticalTree type={'big-screen'} items={items} />}
+          </Route>
+          <Route path="/horizontal">
+            {items.length > 0 && (
+              <HorizontalBasic items={items} type="big-screen" />
+            )}
+          </Route>
+          <Route path="/vertical-custom">
+              {items.length  > 0 && <VerticalCustomContent  type="big-screen" />}
+          </Route>
+          <Route path="/">
+            {items.length > 0 && (
+                <VerticalBasic type={"big-screen"} items={items} />
+              )}
+          </Route>
+        </Switch>
+      </section>
+      </BrowserRouter>
     </Wrapper>
   );
 };

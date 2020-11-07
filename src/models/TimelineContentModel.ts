@@ -5,7 +5,7 @@ import { TimelineMode } from './TimelineModel';
 export interface TimelineContentModel {
   active?: boolean;
   cardHeight?: number;
-  content: string;
+  content?: string;
   detailedText?: string;
   id?: string;
   media?: Media;
@@ -18,4 +18,6 @@ export interface TimelineContentModel {
   theme?: Theme;
   title?: string;
   branchDir?: string;
+  customContent?: React.ReactNode;
+  hasFocus?: boolean;
 }
