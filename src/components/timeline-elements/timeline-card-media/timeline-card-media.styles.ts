@@ -3,7 +3,7 @@ import { Theme } from '../../../models/Theme';
 import { TimelineMode } from '../../../models/TimelineModel';
 
 export const MediaWrapper = styled.div<{
-  theme: Theme;
+  theme?: Theme;
   active?: boolean;
   mode?: TimelineMode;
   dir?: string;
@@ -13,11 +13,11 @@ export const MediaWrapper = styled.div<{
   ${(p) => (p.cardHeight ? `min-height: ${p.cardHeight}px;` : '')};
   align-items: center;
   align-self: center;
-  background: ${(p) => (p.active ? `rgba(${p.theme.secondary}, 0.35)` : '')};
+  background: ${(p) => (p.active ? `rgba(${p.theme?.secondary}, 0.35)` : '')};
   border-radius: 4px;
   flex-direction: row;
   height: 0;
-  padding: 0.5rem;
+  padding: 0.5em;
   pointer-events: ${(p) => (!p.active && p.slideShowActive ? 'none' : '')};
   position: relative;
   text-align: center;
@@ -67,7 +67,7 @@ export const CardVideo = styled.video<{ height?: number }>`
 
 export const MediaDetailsWrapper = styled.div<{ mode?: TimelineMode }>`
   /* position: absolute; */
-  bottom: -1rem;
+  bottom: -1em;
   left: 0;
   right: 0;
   /* margin-left: auto; */
@@ -87,7 +87,7 @@ export const MediaDetailsWrapper = styled.div<{ mode?: TimelineMode }>`
   flex-direction: column;
   flex: 1;
   border-radius: 6px;
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.5em;
 `;
 
 export const ErrorMessage = styled.span`
@@ -100,4 +100,10 @@ export const ErrorMessage = styled.span`
   text-align: center;
   top: 50%;
   transform: translateY(-50%);
+`;
+
+export const IFrameVideo = styled.iframe`
+  position: relative;
+  height: 100%;
+  width: 100%;
 `;

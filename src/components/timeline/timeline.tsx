@@ -1,8 +1,8 @@
 import 'focus-visible';
-import { nanoid } from 'nanoid';
 import React, {
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -48,6 +48,8 @@ const Timeline: React.FunctionComponent<TimelineModel> = (
     scrollable,
     cardPositionHorizontal,
     contentDetailsChildren,
+    flipLayout,
+    onScrollEnd,
   } = props;
 
   const [newOffSet, setNewOffset] = useNewScrollPosition(mode, itemWidth);
@@ -64,7 +66,7 @@ const Timeline: React.FunctionComponent<TimelineModel> = (
   }, [slideShowRunning, scrollable]);
 
   // generate a unique id for the timeline content
-  const id = useRef(nanoid());
+  const id = useRef(Math.random().toString(16).slice(2));
 
   // handlers for navigation
   const handleNext = () => hasFocus && onNext();
@@ -74,23 +76,23 @@ const Timeline: React.FunctionComponent<TimelineModel> = (
 
   // handler for keyboard navigation
   const handleKeySelection = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    const { keyCode } = event;
+    const { key } = event;
 
     if (
-      (mode === 'HORIZONTAL' && keyCode === 39) ||
+      (mode === 'HORIZONTAL' && key === 'ArrowRight') ||
       ((mode === 'VERTICAL' || mode === 'VERTICAL_ALTERNATING') &&
-        keyCode === 40)
+        key === 'ArrowDown')
     ) {
       handleNext();
     } else if (
-      (mode === 'HORIZONTAL' && keyCode === 37) ||
+      (mode === 'HORIZONTAL' && key === 'ArrowLeft') ||
       ((mode === 'VERTICAL' || mode === 'VERTICAL_ALTERNATING') &&
-        keyCode === 38)
+        key === 'ArrowUp')
     ) {
       handlePrevious();
-    } else if (keyCode === 36) {
+    } else if (key === 'Home') {
       handleFirst();
-    } else if (keyCode === 35) {
+    } else if (key === 'End') {
       handleLast();
     }
   };
@@ -130,9 +132,9 @@ const Timeline: React.FunctionComponent<TimelineModel> = (
     } else {
       ele.scrollTop = newOffSet;
     }
-  }, [newOffSet, mode]);
+  }, [newOffSet]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     // setup observer for the timeline elements
     setTimeout(() => {
       const element = timelineMainRef.current;
@@ -201,6 +203,24 @@ const Timeline: React.FunctionComponent<TimelineModel> = (
         className={`${mode.toLowerCase()} timeline-main-wrapper`}
         id="timeline-main-wrapper"
         theme={theme}
+        onScroll={(ev) => {
+          const target = ev.target as HTMLElement;
+          let scrolled = 0;
+
+          if (mode === 'VERTICAL' || mode === 'VERTICAL_ALTERNATING') {
+            scrolled = target.scrollTop + target.clientHeight;
+
+            if (target.scrollHeight === scrolled) {
+              onScrollEnd && onScrollEnd();
+            }
+          } else {
+            scrolled = target.scrollLeft + target.offsetWidth;
+
+            if (target.scrollWidth === scrolled) {
+              onScrollEnd && onScrollEnd();
+            }
+          }
+        }}
       >
         {/* VERTICAL ALTERNATING */}
         {mode === 'VERTICAL_ALTERNATING' ? (
@@ -217,6 +237,7 @@ const Timeline: React.FunctionComponent<TimelineModel> = (
             slideItemDuration={slideItemDuration}
             slideShowRunning={slideShowRunning}
             theme={theme}
+            flipLayout={flipLayout}
           />
         ) : null}
 
@@ -258,12 +279,10 @@ const Timeline: React.FunctionComponent<TimelineModel> = (
             slideItemDuration={slideItemDuration}
             slideShowRunning={slideShowRunning}
             theme={theme}
+            flipLayout={flipLayout}
           />
         ) : null}
       </TimelineMainWrapper>
-
-      {/* placeholder to render timeline content for horizontal mode */}
-      <TimelineContentRender id={id.current} />
 
       {/* Timeline Controls */}
       {!hideControls && (
@@ -284,6 +303,9 @@ const Timeline: React.FunctionComponent<TimelineModel> = (
           />
         </TimelineControlContainer>
       )}
+
+      {/* placeholder to render timeline content for horizontal mode */}
+      <TimelineContentRender id={id.current} />
     </Wrapper>
   );
 };

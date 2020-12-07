@@ -11,6 +11,7 @@ import {
   CardImage,
   CardVideo,
   ErrorMessage,
+  IFrameVideo,
   MediaDetailsWrapper,
   MediaWrapper,
 } from './timeline-card-media.styles';
@@ -68,6 +69,26 @@ const CardMedia: React.FunctionComponent<CardMediaModel> = ({
     ({ message }: ErrorMessageModel) => <ErrorMessage>{message}</ErrorMessage>,
   );
 
+  const isYouTube = useMemo(
+    () =>
+      /^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+$/.test(
+        media.source.url,
+      ),
+    [],
+  );
+
+  const IFrameYouTube = useMemo(
+    () => (
+      <IFrameVideo
+        frameBorder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+        src={`${media.source.url}${active ? '?autoplay=1' : ''}`}
+      />
+    ),
+    [active],
+  );
+
   const Video = useMemo(() => {
     return (
       <CardVideo
@@ -115,7 +136,7 @@ const CardMedia: React.FunctionComponent<CardMediaModel> = ({
         alt={media.name}
       />
     );
-  }, [active]);
+  }, [active, mediaLoaded]);
 
   ErrorMessageMem.displayName = 'Error Message';
 
@@ -130,11 +151,13 @@ const CardMedia: React.FunctionComponent<CardMediaModel> = ({
         cardHeight={cardHeight}
       >
         {media.type === 'VIDEO' &&
+          !isYouTube &&
           (!loadFailed ? (
             Video
           ) : (
             <ErrorMessageMem message="Failed to load the video" />
           ))}
+        {media.type === 'VIDEO' && isYouTube && IFrameYouTube}
         {media.type === 'IMAGE' &&
           (!loadFailed ? (
             Image

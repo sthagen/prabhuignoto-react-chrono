@@ -1,29 +1,29 @@
-import { css, keyframes } from '@emotion/core';
+import { css, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Theme } from '../../../models/Theme';
 import { TimelineMode } from '../../../models/TimelineModel';
 
 export const TimelineItemContentWrapper = styled.section<{
-  theme: Theme;
+  theme?: Theme;
   noMedia?: boolean;
   minHeight?: number;
   mode?: TimelineMode;
 }>`
   align-items: flex-start;
-  background: #fff;
+  background: ${(p) => p.theme.cardBgColor};
   border-radius: 4px;
   display: flex;
   filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.2));
   flex-direction: column;
   justify-content: flex-start;
-  line-height: 1.5rem;
-  margin: ${(p) => (p.mode !== 'VERTICAL_ALTERNATING' ? '1rem 0' : '')};
+  line-height: 1.5em;
+  margin: ${(p) => (p.mode !== 'VERTICAL_ALTERNATING' ? '1em 0' : '')};
   position: relative;
   text-align: left;
   width: 100%;
 
   &:focus {
-    outline: 1px solid ${(p) => p.theme.primary};
+    outline: 1px solid ${(p) => p.theme?.primary};
   }
 `;
 
@@ -45,12 +45,12 @@ export const TimelineContentSubTitle = styled.p<{
 `;
 
 export const TimelinecardTitle = styled.p<{ theme: Theme; dir?: string }>`
-  color: #323232;
+  color: ${(p) => p.theme.cardForeColor};
   font-size: 1rem;
   font-weight: 600;
   margin: 0;
-  margin-top: 0.5rem;
-  padding-left: 0.5rem;
+  margin-top: 0.5em;
+  padding-left: 0.5em;
   &.active {
     color: ${(p) => p.theme.primary};
   }
@@ -58,8 +58,8 @@ export const TimelinecardTitle = styled.p<{ theme: Theme; dir?: string }>`
   width: 95%;
 `;
 
-export const TimelineContentDetails = styled.p`
-  color: #191919;
+export const TimelineContentDetails = styled.p<{ theme?: Theme }>`
+  color: ${(p) => p.theme.cardForeColor};
   font-size: 0.85rem;
   font-weight: 400;
   margin: 0;
@@ -68,7 +68,7 @@ export const TimelineContentDetails = styled.p`
 `;
 
 export const TimelineContentDetailsWrapper = styled.div<{
-  theme: Theme;
+  theme?: Theme;
   customContent?: boolean;
 }>`
   align-items: center;
@@ -76,15 +76,15 @@ export const TimelineContentDetailsWrapper = styled.div<{
   flex-direction: column;
   font-size: 0.8rem;
   margin: 0 auto;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.5em;
   ${(p) => (!p.customContent ? 'max-height: 200px;' : '')}
   overflow-x: hidden;
   overflow-y: auto;
-  scrollbar-color: ${(p) => p.theme.primary} default;
+  scrollbar-color: ${(p) => p.theme?.primary} default;
   scrollbar-width: thin;
-  transition: max-height 0.1s linear;
+  transition: max-height 150ms linear;
   width: 97%;
-  padding: 0.2rem 0.2rem;
+  padding: 0.2em 0.2em;
 
   &.show-less {
     max-height: 50px;
@@ -105,8 +105,8 @@ export const TimelineContentDetailsWrapper = styled.div<{
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: ${(p) => p.theme.primary};
-    outline: 1px solid ${(p) => p.theme.primary};
+    background-color: ${(p) => p.theme?.primary};
+    outline: 1px solid ${(p) => p.theme?.primary};
   }
 `;
 
@@ -119,11 +119,11 @@ export const ShowMore = styled.span<{ show?: boolean; theme?: Theme }>`
   display: ${(p) => (p.show ? 'flex' : 'none')};
   font-size: 0.75rem;
   justify-self: flex-end;
-  margin-bottom: 0.5rem;
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
+  margin-bottom: 0.5em;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
   margin-top: auto;
-  padding: 0.1rem 0.5rem;
+  padding: 0.1em 0.5em;
 
   &:hover {
     background: ${(p) => p.theme.primary};
@@ -147,7 +147,7 @@ export const SlideShowProgressBar = styled.span<{
   color?: string;
 }>`
   background: ${(p) => p.color};
-  bottom: -0.75rem;
+  bottom: -0.75em;
   display: block;
   height: 3px;
   left: 0;
@@ -178,11 +178,11 @@ export const SlideShowProgressBar = styled.span<{
 export const ChevronIconWrapper = styled.span<{ collapsed?: boolean }>`
   align-items: center;
   display: flex;
-  height: 1rem;
+  height: 1em;
   justify-content: center;
-  margin-left: 0.2rem;
-  margin-top: 0.2rem;
-  width: 1rem;
+  margin-left: 0.2em;
+  margin-top: 0.2em;
+  width: 1em;
   ${(p) =>
     p.collapsed
       ? `

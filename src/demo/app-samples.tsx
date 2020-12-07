@@ -73,7 +73,9 @@ export const VerticalBasic: FunctionComponent<{
         mode="VERTICAL"
         slideShow
         slideItemDuration={2500}
-        scrollable
+        scrollable={{scrollbar:   false}}
+        flipLayout
+        theme={{cardBgColor:  "#D6EAF8",  cardForeColor:  "blue"}}
       />
     </ComponentContainerTree>
   </Vertical>
@@ -110,7 +112,8 @@ export const VerticalTree: FunctionComponent<{
         slideShow
         slideItemDuration={2350}
         scrollable={{scrollbar: false}}
-        // theme={{ primary: '#4a4e69', secondary: '#c9ada7' }}
+        allowDynamicUpdate
+        onScrollEnd={() => console.log('end reached')}
       />
     </ComponentContainerTree>
   </Vertical>
@@ -236,7 +239,7 @@ export const VerticalCustomContent: FunctionComponent<{
     </Description>
     <ComponentContainerTree type={type}>
       <Chrono
-        mode="HORIZONTAL" 
+        mode="VERTICAL" 
         cardHeight={200}
         scrollable
       >

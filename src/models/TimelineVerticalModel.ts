@@ -68,19 +68,21 @@ interface CommonPropsModel {
   theme?: Theme;
 
   hasFocus?: boolean;
+
+  flipLayout?: boolean;
 }
 
-interface CommonBranchAndLeafModel extends CommonPropsModel {
+interface CommonVerticalModel extends CommonPropsModel {
   active?: boolean;
   className: string;
   id?: string;
 }
 
-export interface VerticalCircleModel extends CommonBranchAndLeafModel {
-  onActive: (timelinePointOffset: number) => void;
+export interface VerticalCircleModel extends CommonVerticalModel {
+  onActive: (pointOffset: number) => void;
 }
 
-export interface VerticalItemModel extends CommonBranchAndLeafModel {
+export interface VerticalItemModel extends CommonVerticalModel {
   cardDetailedText?: string;
   cardSubtitle?: string;
   cardTitle?: string;
@@ -91,9 +93,9 @@ export interface VerticalItemModel extends CommonBranchAndLeafModel {
   visible?: boolean;
   contentDetailsChildren?: React.ReactNode;
   onActive: (
-    timelinePointOffset: number,
-    timelineContentHeight: number,
-    timelineContentOffset: number,
+    pointOffset: number,
+    contentHeight: number,
+    contentOffset: number,
   ) => void;
 }
 

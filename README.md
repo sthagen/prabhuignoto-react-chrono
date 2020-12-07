@@ -6,11 +6,13 @@
 
   [![Build Status](https://dev.azure.com/prabhummurthy/react-chrono/_apis/build/status/prabhuignoto.react-chrono?branchName=master)](https://dev.azure.com/prabhummurthy/react-chrono/_build/latest?definitionId=7&branchName=master)
   [![DeepScan grade](https://deepscan.io/api/teams/10074/projects/13644/branches/234929/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=10074&pid=13644&bid=234929)
+  [![DeepSource](https://deepsource.io/gh/prabhuignoto/react-chrono.svg/?label=active+issues)](https://deepsource.io/gh/prabhuignoto/react-chrono/?ref=repository-badge)
   [![Codacy Badge](https://app.codacy.com/project/badge/Grade/f2e24a98defd4e4fa7f6f24d86b8dab5)](https://www.codacy.com/manual/prabhuignoto/react-chrono?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=prabhuignoto/react-chrono&amp;utm_campaign=Badge_Grade)
   [![react-chrono](https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/simple/8zb5a5&style=flat&logo=cypress)](https://dashboard.cypress.io/projects/8zb5a5/runs)
   ![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/prabhuignoto/react-chrono?style=flat)
   [![Depfu](https://badges.depfu.com/badges/48a23a6a830309649b7e516467cd9a48/overview.svg)](https://depfu.com/github/prabhuignoto/react-chrono?project_id=15325)
   ![https://badgen.net/bundlephobia/min/react](https://badgen.net/bundlephobia/min/react)
+  <a href="https://5f985eb478dcb00022cfd60e-rndeselvms.chromatic.com/?path=/story/example-vertical--vertical-basic" target="_blank"><img src="https://raw.githubusercontent.com/storybooks/brand/master/badge/badge-storybook.svg"></a>
 
   <div>
     <img src="./readme-assets/demo3.gif" />
@@ -52,6 +54,7 @@
   - [Item Width](#item-width)
   - [Theme](#theme)
 - [📦 CodeSandbox Examples](#-codesandbox-examples)
+- [📚 Storybook](#-storybook)
 - [🔨 Build Setup](#-build-setup)
 - [🧪 Tests](#-tests)
 - [🤝 Contributing](#-contributing)
@@ -155,10 +158,13 @@ Play the timeline automatically with the `slideShow` mode. This prop enables the
 | slideItemDuration       | duration (in ms), the timeline card is active during  a `slideshow`.                  | 5000         |
 | itemWidth               | width of the timeline section in `HORIZONTAL` mode.                                   | 300          |
 | hideControls            | hides the navigation controls.                                                        | 300          |
+| allowDynamicUpdate      | allows timeline items to be updated dynamically.                                      | false        |
 | cardHeight              | sets the minimum height of the timeline card.                                         | 250          |
 | scrollable              | makes the timeline [scrollable](#scrollable) (applicable for `VERTICAL` & `VERTICAL_ALTERNATING`).   | true         |
+| flipLayout              | flips the layout (RTL). applicable only to `VERTICAL` and `VERTICAL_ALTERNATING`      | false         |
 | cardPositionHorizontal  | positions the card in `HORIZONTAL` mode. can be either `TOP` or `BOTTOM`              |              |
 | theme                   | prop to customize the colors.                                                         |              |
+| onScrollEnd             | use the `onScrollEnd` to detect the end of the timeline.                              |              |
 
 ### Mode
 
@@ -273,6 +279,23 @@ Videos start playing automatically when active and will be automatically paused 
 }
 ```
 
+To embed YouTube videos, use the right embed url.
+
+```sh
+{
+  title: "7 December 1941",
+  cardTitle: "Pearl Harbor",
+  media: {
+    source: {
+      url: "https://www.youtube.com/embed/f6cz9gtMTeI",
+      type: "mp4"
+    },
+    type: "VIDEO",
+    name: "Pearl Harbor"
+  }
+}
+```
+
 ![media](./readme-assets/media.png)
 
 ### Rendering custom content
@@ -332,7 +355,7 @@ The `itemWidth` prop can be used to set the width of each individual timeline se
 Customize colors with `theme` prop.
 
 ```sh
-<chrono items={items}  theme={{primary: "red", secondary: "blue" }} />
+<chrono items={items}  theme={{primary: "red", secondary: "blue", cardBgColor: "yellow", cardForeColor: "violet" }} />
 ```
 
 ## 📦 CodeSandbox Examples
@@ -341,6 +364,15 @@ Customize colors with `theme` prop.
 - [Vertical basic](https://codesandbox.io/s/react-chrono-vertical-basic-0rm1o?file=/src/App.js)
 - [Vertical Alternating](https://codesandbox.io/s/react-chrono-tree-text-1fcs3?file=/src/App.js)
 - [Vertical All Images](https://codesandbox.io/s/react-chrono-tree-vertical-images-b5zri?file=/src/App.js)
+- [Vertical Custom content](https://codesandbox.io/s/react-chrono-vertical-custom-qepnm?file=/src/App.js)  
+- [Vertical Custom content with items collections](https://codesandbox.io/s/react-chrono-vertical-custom-2-uctcp?file=/src/App.js)
+
+## 📚 Storybook
+
+Deep dive into wide variety of examples hosted as a Storybook.
+
+- [Horizontal Collection](https://5f985eb478dcb00022cfd60e-rndeselvms.chromatic.com/?path=/story/example-horizontal--horizontal-timeline)
+- [Vertical Collection](https://5f985eb478dcb00022cfd60e-rndeselvms.chromatic.com/?path=/story/example-vertical--vertical-basic)
 
 ## 🔨 Build Setup
 
@@ -387,10 +419,6 @@ yarn run rollup
 - [Typescript](https://www.typescriptlang.org/).
 - Styled with [emotion](https://emotion.sh/).
 - Powered by [snowpack](https://www.snowpack.dev/)
-
-## 🎯 What's coming next
-
-- Support for Mobile devices & Tablets (responsive).
 
 ## Meta
 

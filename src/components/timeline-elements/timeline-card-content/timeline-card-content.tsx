@@ -85,7 +85,7 @@ const TimelineCardContent: React.FunctionComponent<TimelineContentModel> = React
       }, 100);
     }, []);
 
-    const setupTimer = (interval: number) => {
+    const setupTimer = useCallback((interval: number) => {
       if (!slideItemDuration) {
         return;
       }
@@ -104,7 +104,7 @@ const TimelineCardContent: React.FunctionComponent<TimelineContentModel> = React
         setRemainInterval(slideItemDuration);
         id && onElapsed && onElapsed(id);
       }, interval);
-    };
+    }, []);
 
     // pause the slide show
     const tryHandlePauseSlideshow = useCallback(() => {
@@ -194,6 +194,13 @@ const TimelineCardContent: React.FunctionComponent<TimelineContentModel> = React
       [showMore, customContent],
     );
 
+    const handleExpandDetails = useCallback(() => {
+      if ((active && paused) || !slideShowActive) {
+        setShowMore(!showMore);
+        onShowMore();
+      }
+    }, [active, paused, slideShowActive, showMore]);
+
     return (
       <TimelineItemContentWrapper
         className={contentClass}
@@ -201,7 +208,7 @@ const TimelineCardContent: React.FunctionComponent<TimelineContentModel> = React
         noMedia={!media}
         minHeight={cardHeight}
         mode={mode}
-        onClick={(ev) => {
+        onClick={(ev: React.MouseEvent) => {
           ev.stopPropagation();
           if (!slideShowActive && onClick && id) {
             onClick(id);
@@ -250,6 +257,7 @@ const TimelineCardContent: React.FunctionComponent<TimelineContentModel> = React
             <TimelineContentDetails
               className={showMore ? 'active' : ''}
               ref={detailsRef}
+              theme={theme}
             >
               {detailedText}
             </TimelineContentDetails>
@@ -260,20 +268,15 @@ const TimelineCardContent: React.FunctionComponent<TimelineContentModel> = React
         {detailedText && !customContent && (
           <ShowMore
             role="button"
-            onClick={() => {
-              if ((active && paused) || !slideShowActive) {
-                setShowMore(!showMore);
-                onShowMore();
-              }
-            }}
-            onKeyPress={(event) => {
-              if (event.key === 'Enter') {
-                if ((active && paused) || !slideShowActive) {
-                  setShowMore(!showMore);
-                  onShowMore();
+            onClick={handleExpandDetails}
+            onKeyPress={useCallback(
+              (event) => {
+                if (event.key === 'Enter') {
+                  handleExpandDetails();
                 }
-              }
-            }}
+              },
+              [active, paused, slideShowActive, showMore],
+            )}
             className="show-more"
             show={canShowMore}
             theme={theme}

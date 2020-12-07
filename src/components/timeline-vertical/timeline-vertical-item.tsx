@@ -1,3 +1,4 @@
+import cls from 'classnames';
 import React, { useCallback, useMemo, useRef } from 'react';
 import { VerticalItemModel } from '../../models/TimelineVerticalModel';
 import TimelineCard from '../timeline-elements/timeline-card-content/timeline-card-content';
@@ -17,25 +18,26 @@ const VerticalItem: React.FunctionComponent<VerticalItemModel> = (
   const {
     active,
     alternateCards,
-    cardHeight,
-    className,
     cardDetailedText,
+    cardHeight,
     cardSubtitle,
     cardTitle,
+    className,
+    contentDetailsChildren,
+    hasFocus,
     id,
     index,
     media,
     mode,
     onActive,
     onClick,
+    onElapsed,
     slideItemDuration,
     slideShowRunning,
     theme,
     title,
     visible,
-    onElapsed,
-    contentDetailsChildren,
-    hasFocus,
+    flipLayout,
   } = props;
 
   const handleOnActive = (offset: number) => {
@@ -45,6 +47,14 @@ const VerticalItem: React.FunctionComponent<VerticalItemModel> = (
     }
   };
 
+  // handler for read more
+  const handleShowMore = useCallback(() => {
+    setTimeout(() => {
+      handleOnActive(0);
+    }, 100);
+  }, []);
+
+  // timeline title
   const Title = useMemo(() => {
     return (
       <TimelineTitleWrapper
@@ -52,26 +62,35 @@ const VerticalItem: React.FunctionComponent<VerticalItemModel> = (
         alternateCards={alternateCards}
         mode={mode}
         hide={!title}
+        flip={flipLayout}
       >
-        <TimelineItemTitle title={title} active={active} theme={theme} />
+        <TimelineItemTitle
+          title={title}
+          active={active}
+          theme={theme}
+          align={flipLayout ? 'left' : 'right'}
+        />
       </TimelineTitleWrapper>
     );
   }, [active]);
 
-  const handleShowMore = useCallback(() => {
-    setTimeout(() => {
-      handleOnActive(0);
-    }, 100);
-  }, []);
+  const verticalItemClass = useMemo(
+    () =>
+      cls({ [className]: true }, 'vertical-item-row', visible ? 'visible' : ''),
+    [],
+  );
 
+  // timeline card content
   const Content = useMemo(() => {
+    const contentClass = cls('card-content-wrapper', visible ? 'visible' : '', {
+      [className]: true,
+    });
     return (
       <TimelineCardContentWrapper
-        className={`${className} card-content-wrapper ${
-          visible ? 'visible' : ''
-        }`}
+        className={contentClass}
         alternateCards={alternateCards}
         noTitle={!title}
+        flip={flipLayout}
       >
         <TimelineCard
           active={active}
@@ -80,22 +99,23 @@ const VerticalItem: React.FunctionComponent<VerticalItemModel> = (
           content={cardSubtitle}
           customContent={contentDetailsChildren}
           detailedText={cardDetailedText}
+          hasFocus={hasFocus}
           id={id}
           media={media}
           mode={mode}
           onClick={onClick}
-          onElapsed={onElapsed || function () {}}
+          onElapsed={onElapsed}
+          onShowMore={handleShowMore}
           slideItemDuration={slideItemDuration}
           slideShowActive={slideShowRunning}
           theme={theme}
           title={cardTitle}
-          hasFocus={hasFocus}
-          onShowMore={handleShowMore}
         />
       </TimelineCardContentWrapper>
     );
   }, [hasFocus, slideShowRunning, active]);
 
+  // timeline circle
   const Circle = useMemo(() => {
     return (
       <VerticalCircle
@@ -114,12 +134,12 @@ const VerticalItem: React.FunctionComponent<VerticalItemModel> = (
 
   return (
     <VerticalItemWrapper
-      className={`${className} ${visible ? 'visible' : ''} vertical-item-row`}
-      key={index}
-      ref={contentRef}
-      data-testid="vertical-item-row"
       alternateCards={alternateCards}
       cardHeight={cardHeight}
+      className={verticalItemClass}
+      data-testid="vertical-item-row"
+      key={index}
+      ref={contentRef}
       role="listitem"
     >
       {/* title */}
