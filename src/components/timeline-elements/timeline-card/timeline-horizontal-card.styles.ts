@@ -8,6 +8,7 @@ export const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   position: relative;
+  width: 100%;
 
   &.vertical {
     justify-content: flex-start;
@@ -57,35 +58,60 @@ interface CircleModel {
 }
 
 export const Circle = styled.div<CircleModel>`
-  background: ${(p: CircleModel) => p.theme?.primary};
   border-radius: 50%;
   cursor: pointer;
-  height: 1em;
-  width: 1em;
+  height: 1.25rem;
+  width: 1.25rem;
 
   &.active {
-    animation: ${scaleUp} 0.1s ease-in;
-    transform: scale(1.4);
+    &.using-icon {
+      /* transform: scale(1.75); */
+    }
+    &:not(.using-icon) {
+      animation: ${scaleUp} 0.1s ease-in;
+      transform: scale(1.25);
+    }
 
     &::after {
-      background: ${(p) => p.theme.secondary};
       border-radius: 50%;
       content: '';
       display: block;
-      height: 0.75em;
+      height: 1em;
       left: 50%;
       position: absolute;
       right: 0;
       top: 50%;
       transform: translateY(-50%) translateX(-50%);
-      width: 0.75em;
+      width: 1em;
       z-index: -1;
     }
   }
 
-  &.in-active {
-    animation: ${scaleDown} 0.1s ease-in;
-    transform: scale(1);
+  &:not(.using-icon) {
+    background: ${(p: CircleModel) => p.theme?.primary};
+
+    &.active {
+      &::after {
+        background: ${(p) => p.theme.secondary};
+      }
+    }
+
+    &.in-active {
+      animation: ${scaleDown} 0.1s ease-in;
+    }
+  }
+
+  &.using-icon {
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: scale(1.5);
+
+    img {
+      max-width: 90%;
+      max-height: 90%;
+    }
   }
 `;
 
