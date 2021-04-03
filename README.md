@@ -6,7 +6,6 @@
 
   [![Build Status](https://dev.azure.com/prabhummurthy/react-chrono/_apis/build/status/prabhuignoto.react-chrono?branchName=master)](https://dev.azure.com/prabhummurthy/react-chrono/_build/latest?definitionId=7&branchName=master)
   [![DeepScan grade](https://deepscan.io/api/teams/10074/projects/13644/branches/234929/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=10074&pid=13644&bid=234929)
-  [![DeepSource](https://deepsource.io/gh/prabhuignoto/react-chrono.svg/?label=active+issues)](https://deepsource.io/gh/prabhuignoto/react-chrono/?ref=repository-badge)
   [![Codacy Badge](https://app.codacy.com/project/badge/Grade/f2e24a98defd4e4fa7f6f24d86b8dab5)](https://www.codacy.com/manual/prabhuignoto/react-chrono?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=prabhuignoto/react-chrono&amp;utm_campaign=Badge_Grade)
   [![react-chrono](https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/simple/8zb5a5&style=flat&logo=cypress)](https://dashboard.cypress.io/projects/8zb5a5/runs)
   ![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/prabhuignoto/react-chrono?style=flat)
@@ -162,12 +161,14 @@ Play the timeline automatically with the `slideShow` mode. This prop enables the
 | itemWidth               | width of the timeline section in `HORIZONTAL` mode.                                   | 300          |
 | hideControls            | hides the navigation controls.                                                        | 300          |
 | allowDynamicUpdate      | allows timeline items to be updated dynamically.                                      | false        |
-| cardHeight              | sets the minimum height of the timeline card.                                         | 250          |
+| cardHeight              | sets the minimum height of the timeline card.                                         | 200          |
+| cardWidth               | sets the maximum width of the timeline card.                                          |              |
 | scrollable              | makes the timeline [scrollable](#scrollable) (applicable for `VERTICAL` & `VERTICAL_ALTERNATING`).   | true         |
 | flipLayout              | flips the layout (RTL). applicable only to `VERTICAL` and `VERTICAL_ALTERNATING`      | false         |
 | cardPositionHorizontal  | positions the card in `HORIZONTAL` mode. can be either `TOP` or `BOTTOM`              |              |
 | theme                   | prop to customize the colors.                                                         |              |
 | onScrollEnd             | use the `onScrollEnd` to detect the end of the timeline.                              |              |
+| useReadMore             | enables or disables the read more button. when disabled the card will auto expand to fit the content|    true          |
 
 ### Mode
 
