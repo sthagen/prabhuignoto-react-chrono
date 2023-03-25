@@ -5,13 +5,20 @@ const Layout = () => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>
-        <h2>React-Chrono</h2>
+        <h2>React-Chrono (Kitchen Sink)</h2>
       </div>
       <div className={styles.container}>
         <div className={styles.aside}>
           <NavLink to={'/vertical-basic'}>Vertical Basic</NavLink>
+          <NavLink to={'/vertical-basic-nested'}>Vertical Basic Nested</NavLink>
+          <NavLink to={'/vertical-world-history'}>
+            Vertical World History
+          </NavLink>
           <NavLink to={'/vertical-alternating-mixed'}>
             Vertical Alternating Mixed
+          </NavLink>
+          <NavLink to={'/vertical-alternating-nested'}>
+            Vertical Alternating Nested
           </NavLink>
           <NavLink to={'/vertical-alternating'}>Vertical Alternating</NavLink>
           <NavLink to={'/horizontal'}>Horizontal</NavLink>
