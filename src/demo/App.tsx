@@ -169,6 +169,7 @@ const NewDemo: React.FunctionComponent = () => {
                 onClick={() => {
                   setState(1 - state);
                 }}
+                className="rounded-full"
               >
                 change
               </button>
@@ -199,7 +200,7 @@ const NewDemo: React.FunctionComponent = () => {
         {
           path: '/horizontal-all',
           element: items.length > 0 && (
-            <HorizontalAll items={items} type="big-screen" />
+            <HorizontalAll items={historyItems} type="big-screen" />
           ),
         },
         {
