@@ -138,6 +138,9 @@ export const VerticalBasic: FunctionComponent<{
         fontSizes={{
           title: '1.5rem',
         }}
+        theme={{
+          cardDetailsColor: '#555555',
+        }}
         // flipLayout
         focusActiveItemOnLoad
         activeItemIndex={2}
@@ -189,6 +192,9 @@ export const VerticalNewMedia: FunctionComponent<{
             // enableOutline
             fontSizes={{
               title: '1.5rem',
+            }}
+            theme={{
+              cardDetailsColor: '#2f4f4f',
             }}
             cardHeight={350}
             // timelinePointShape="diamond"
@@ -243,7 +249,7 @@ export const VerticalAlternatingNested: FunctionComponent<{
             onItemSelected={(selected) => console.log(selected.cardTitle)}
             // enableOutline
             fontSizes={{
-              title: '1.5rem',
+              title: '1rem',
             }}
             theme={{
               primary: '#191919',
@@ -251,6 +257,7 @@ export const VerticalAlternatingNested: FunctionComponent<{
               titleColor: '#FFA500',
               titleColorActive: '#000',
               cardTitleColor: '#FFA500',
+              iconBackgroundColor: '#fff',
             }}
             cardHeight={150}
             timelinePointShape="square"
@@ -260,7 +267,7 @@ export const VerticalAlternatingNested: FunctionComponent<{
             // cardHeight={350}
             mediaHeight={200}
             enableDarkToggle
-            timelinePointDimension={20}
+            timelinePointDimension={30}
             classNames={{
               cardText: 'custom-text',
             }}
@@ -354,7 +361,7 @@ export const VerticalBasicNested: FunctionComponent<{
     <ComponentContainerTree type={type}>
       <Chrono
         items={items}
-        mode="VERTICAL"
+        mode="HORIZONTAL"
         slideShow
         cardWidth={500}
         slideItemDuration={2500}
@@ -370,7 +377,7 @@ export const VerticalBasicNested: FunctionComponent<{
         onItemSelected={(selected) => console.log(selected.cardTitle)}
         enableOutline
         fontSizes={{
-          title: '1.5rem',
+          title: '1rem',
         }}
         // flipLayout
         focusActiveItemOnLoad
