@@ -31,16 +31,10 @@ describe('Title', () => {
   //should have the color and padding
   it('should have the color and padding', () => {
     const { getByText } = customRender(
-      <TitleMemo
-        title="title"
-        color="black"
-        dir="rtl"
-        active={false}
-        padding
-      />,
+      <TitleMemo title="title" color="#ccc" dir="rtl" active={false} padding />,
       { providerProps },
     );
-    expect(getByText('title')).toHaveStyle('color: black');
+    expect(getByText('title')).toHaveStyle('color: #ccc');
     expect(getByText('title')).toHaveStyle('padding: 0.25rem 0 0.25rem 0.5rem');
   });
 
@@ -79,7 +73,7 @@ describe('subtitle', () => {
   it('should render the color and padding correctly', () => {
     const { getByText } = customRender(
       <SubTitleMemo
-        color="red"
+        color="#000"
         dir={'rtl'}
         classString="card-sub-title"
         content="card sub title"
@@ -87,7 +81,7 @@ describe('subtitle', () => {
       ></SubTitleMemo>,
       { providerProps },
     );
-    expect(getByText('card sub title')).toHaveStyle('color: red');
+    expect(getByText('card sub title')).toHaveStyle('color: #000');
     expect(getByText('card sub title')).toHaveStyle(
       'padding: 0.5rem 0 0.5rem 0.5rem',
     );
