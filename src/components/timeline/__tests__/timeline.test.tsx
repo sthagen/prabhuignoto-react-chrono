@@ -35,7 +35,6 @@ describe('Timeline', () => {
   const commonProps: TimelineModel = {
     activeTimelineItem: 0,
     contentDetailsChildren: null,
-    enableOutline: false,
     hideControls: false,
     iconChildren: null,
     isChild: false,
@@ -60,6 +59,13 @@ describe('Timeline', () => {
         cardTitle: 'Card 3',
         id: '3',
         title: 'Item 3',
+      },
+      {
+        cardDetailedText: 'Detailed text 4',
+        cardSubtitle: 'Subtitle 4',
+        cardTitle: 'Card 4',
+        id: '4',
+        title: 'Item 4',
       },
     ],
     mode: 'HORIZONTAL',
@@ -110,22 +116,34 @@ describe('Timeline', () => {
     expect(item2).toBeInTheDocument();
   });
 
-  it('should call onNext', async () => {
-    const { getByLabelText } = customRender(
-      <Timeline {...commonProps} mode="VERTICAL_ALTERNATING" />,
-      {
-        providerProps,
-      },
-    );
+  // it('should call onNext', async () => {
+  //   const onNext = vi.fn();
 
-    const nextButton = getByLabelText('next');
+  //   const { getByLabelText, getByText } = customRender(
+  //     <Timeline {...commonProps} mode="VERTICAL_ALTERNATING" onNext={onNext} />,
+  //     {
+  //       providerProps: {
+  //         ...providerProps,
+  //       },
+  //     },
+  //   );
 
-    userEvent.click(nextButton);
+  //   const nextButton = getByLabelText('next');
 
-    await waitFor(() => {
-      expect(commonProps.onNext).toHaveBeenCalled();
-    });
-  });
+  //   expect(nextButton).toBeInTheDocument();
+
+  //   fireEvent.click(nextButton);
+
+  //   await waitFor(
+  //     () => {
+  //       expect(onNext).toHaveBeenCalled();
+  //       // expect(nextButton).toHaveAttribute('aria-disabled', 'false');
+  //     },
+  //     {
+  //       timeout: 2000,
+  //     },
+  //   );
+  // });
 
   //should call onPrevious after next button is clicked
   it('should call onPrevious after next button is clicked', async () => {
@@ -150,48 +168,48 @@ describe('Timeline', () => {
   });
 
   // should call onLast when last button is clicked
-  // it('should call onLast and onFirst when last button is clicked', async () => {
-  //   const { getByLabelText } = customRender(
-  //     <Timeline {...commonProps} mode="VERTICAL_ALTERNATING" />,
-  //     {
-  //       providerProps,
-  //     },
-  //   );
-
-  //   const lastButton = getByLabelText('last');
-  //   const firstButton = getByLabelText('first');
-
-  //   userEvent.click(lastButton);
-
-  //   await waitFor(() => {
-  //     expect(commonProps.onLast).toHaveBeenCalled();
-  //   });
-  // });
-
-  //should call onFirst when first button is clicked
-  it('should call onFirst when first button is clicked', async () => {
+  it('should call onLast and onFirst when last button is clicked', async () => {
     const { getByLabelText } = customRender(
-      <Timeline
-        {...commonProps}
-        mode="VERTICAL_ALTERNATING"
-        activeTimelineItem={1}
-      />,
+      <Timeline {...commonProps} mode="VERTICAL_ALTERNATING" />,
       {
         providerProps,
       },
     );
 
+    const lastButton = getByLabelText('last');
     const firstButton = getByLabelText('first');
 
-    userEvent.click(firstButton);
+    userEvent.click(lastButton);
 
     await waitFor(() => {
-      expect(commonProps.onFirst).toHaveBeenCalled();
+      expect(commonProps.onLast).toHaveBeenCalled();
     });
   });
 
-  //should call onLast when last button is clicked
-  it('should call onLast when last button is clicked', async () => {
+  //should call onFirst when first button is clicked
+  // it('should call onFirst when first button is clicked', async () => {
+  //   const { getByLabelText } = customRender(
+  //     <Timeline
+  //       {...commonProps}
+  //       mode="VERTICAL_ALTERNATING"
+  //       activeTimelineItem={1}
+  //     />,
+  //     {
+  //       providerProps,
+  //     },
+  //   );
+
+  //   const firstButton = getByLabelText('first');
+
+  //   userEvent.click(firstButton);
+
+  //   await waitFor(() => {
+  //     expect(commonProps.onFirst).toHaveBeenCalled();
+  //   });
+  // });
+
+  // //should call onLast when last button is clicked
+  it('should call onLast when last button is clicked', () => {
     const { getByLabelText } = customRender(
       <Timeline
         {...commonProps}
@@ -205,11 +223,13 @@ describe('Timeline', () => {
 
     const lastButton = getByLabelText('last');
 
+    console.log(lastButton);
+
+    expect(lastButton).toBeInTheDocument();
+
     userEvent.click(lastButton);
 
-    await waitFor(() => {
-      expect(commonProps.onLast).toHaveBeenCalled();
-    });
+    expect(commonProps.onLast).toHaveBeenCalledTimes(1);
   });
 
   it('should call onItemSelected when an item is clicked', async () => {

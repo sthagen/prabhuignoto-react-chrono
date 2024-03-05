@@ -1,6 +1,8 @@
 import { Theme } from './Theme';
 import { TimelineItemModel } from './TimelineItemModel';
 
+export type TextDensity = 'LOW' | 'HIGH';
+
 /**
  * model internally used by the component
  *
@@ -17,7 +19,6 @@ export type TimelineModel = Pick<
   | 'slideShow'
   | 'onScrollEnd'
   | 'mode'
-  | 'enableOutline'
   | 'hideControls'
   | 'timelinePointDimension'
   | 'nestedCardHeight'
@@ -40,6 +41,39 @@ export type TimelineModel = Pick<
   slideShowRunning?: boolean;
 };
 
+type Option = {
+  helpText?: string;
+  text: string;
+};
+
+type ChangeDensityOptions = {
+  high?: Option;
+  low?: Option;
+};
+
+type ChangeLayoutOptions = {
+  alternating?: Option;
+  horizontal?: Option;
+  horizontal_all?: Option;
+  vertical?: Option;
+};
+
+export type ButtonTexts = {
+  changeDensity?: string;
+  changeDensityOptions?: ChangeDensityOptions;
+  changeLayout?: string;
+  changeLayoutOptions?: ChangeLayoutOptions;
+  dark?: string;
+  first: string;
+  jumpTo?: string;
+  last: string;
+  light?: string;
+  next?: string;
+  play?: string;
+  previous?: string;
+  stop?: string;
+};
+
 /**
  * Main props used by the host app.
  *
@@ -59,16 +93,7 @@ export type TimelineProps = {
   borderLessCards?: boolean;
 
   // custom button texts
-  buttonTexts?: {
-    dark?: string;
-    first: string;
-    last: string;
-    light?: string;
-    next?: string;
-    play?: string;
-    previous?: string;
-    stop?: string;
-  };
+  buttonTexts?: ButtonTexts;
 
   // minimum height of the card
   cardHeight?: number;
@@ -115,8 +140,9 @@ export type TimelineProps = {
 
   enableDarkToggle?: boolean;
 
-  // enables the outline view
-  enableOutline?: boolean;
+  enableLayoutSwitch?: boolean;
+
+  enableQuickJump?: boolean;
 
   // flips the layout, useful for RTL
   flipLayout?: boolean;
@@ -178,6 +204,8 @@ export type TimelineProps = {
 
   parseDetailsAsHTML?: boolean;
 
+  responsiveBreakPoint?: number;
+
   // option to enable scrollbar
   scrollable?: boolean | { scrollbar: boolean };
 
@@ -194,6 +222,8 @@ export type TimelineProps = {
 
   slideShowType?: SlideShowType;
 
+  textDensity?: TextDensity;
+
   textOverlay?: boolean;
 
   // custom theme
@@ -209,14 +239,18 @@ export type TimelineProps = {
 
   titleDateFormat?: string;
 
+  toolbarPosition?: 'top' | 'bottom';
+
   uniqueId?: string;
 
   // enables the read more button
   useReadMore?: boolean;
-
-  verticalBreakPoint?: number;
 };
 
 export type SlideShowType = 'reveal' | 'slide_in' | 'slide_from_sides';
 
-export type TimelineMode = 'VERTICAL' | 'HORIZONTAL' | 'VERTICAL_ALTERNATING';
+export type TimelineMode =
+  | 'VERTICAL'
+  | 'HORIZONTAL'
+  | 'VERTICAL_ALTERNATING'
+  | 'HORIZONTAL_ALL';

@@ -16,7 +16,6 @@ export type Props = Pick<
   | 'timelinePointDimension'
   | 'lineWidth'
   | 'cardHeight'
-  | 'enableOutline'
   | 'disableClickOnCircle'
   | 'cardLess'
   | 'nestedCardHeight'
@@ -76,6 +75,8 @@ export type TimelinePointModel = Omit<VerticalModel, 'timelineContent'> & {
   // Icon element associated with the timeline point.
   iconChild?: React.ReactNode;
 
+  isMobile?: boolean;
+
   // Event handler for activating the timeline point.
   onActive: (pointOffset: number) => void;
 };
@@ -120,7 +121,6 @@ export type TimelineVerticalModel = Pick<
   Props,
   // List of properties inherited from Props:
   | 'alternateCards'
-  | 'enableOutline'
   | 'mode'
   | 'onClick'
   | 'onElapsed'

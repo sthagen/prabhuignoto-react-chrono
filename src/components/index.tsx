@@ -8,7 +8,7 @@ import Timeline from './timeline/timeline';
 const toReactArray = React.Children.toArray;
 
 const Chrono: React.FunctionComponent<Partial<TimelineProps>> = (
-  props: Partial<TimelineProps>,
+  props: TimelineProps,
 ) => {
   const {
     allowDynamicUpdate = false,
@@ -20,7 +20,6 @@ const Chrono: React.FunctionComponent<Partial<TimelineProps>> = (
     activeItemIndex = 0,
     titleDateFormat = 'MMM DD, YYYY',
     mode,
-    enableOutline,
     hideControls,
   } = props;
 
@@ -211,7 +210,6 @@ const Chrono: React.FunctionComponent<Partial<TimelineProps>> = (
         onItemSelected={onItemSelected}
         onOutlineSelection={handleOutlineSelection}
         mode={mode}
-        enableOutline={enableOutline}
         hideControls={hideControls}
         onPaused={onPaused}
       />

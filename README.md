@@ -19,7 +19,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/prabhuignoto/react-chrono/badge.svg?branch=master)](https://coveralls.io/github/prabhuignoto/react-chrono?branch=master)
 
   <div>
-    <img src="./readme-assets/react_chrono_2.gif" />
+    <img src="./readme-assets/new-image.png" />
   </div>
 
 </div>
@@ -59,7 +59,6 @@
   - [🎭Custom icons for the Timeline](#custom-icons-for-the-timeline)
   - [🌿Nested Timelines](#nested-timelines)
   - [Slideshow](#slideshow)
-  - [Outline](#outline)
   - [Item Width](#item-width)
   - [🎥Media Settings](#media-settings)
   - [Breakpoint](#breakpoint)
@@ -132,7 +131,7 @@ To render the timeline vertically use the `VERTICAL` mode
 </div>
 ```
 
-![vertical-basic](./readme-assets/vertical-basic.png)
+![vertical-basic](./readme-assets/vertical_basic.png)
 
 ### 🚥Vertical Alternating
 
@@ -169,7 +168,8 @@ Below are the available configuration options for the component:
 | disableTimelinePoint     | false                | Disables the timeline point in both `HORIZONTAL` and `VERTICAL` mode.                                                                    |
 | enableBreakPoint         | true                 | Automatically switches to vertical mode when the vertical breakpoint is reached.                                                         |
 | enableDarkToggle         | false                | Adds a toggle switch for dark mode.                                                                                                      |
-| enableOutline            | false                | Enables an outline menu in vertical and vertical alternating modes.                                                                      |
+| enableLayoutSwitch       | true                 | Switches the timeline layout                                                                                                             |
+| enableQuickJump          | true                 | Allows to quickly jump to a timeline item                                                                                                |
 | flipLayout               | false                | Reverses the layout (Right to Left).                                                                                                     |
 | focusActiveItemOnLoad    | false                | Automatically scrolls to and focuses on the `activeItemIndex` when loading.                                                              |
 | fontSizes                |                      | Allows customization of font sizes.                                                                                                      |
@@ -187,18 +187,20 @@ Below are the available configuration options for the component:
 | onScrollEnd              |                      | Detects the end of the timeline via `onScrollEnd`.                                                                                       |
 | onThemeChange            |                      | Invokes a callback when the theme changes, triggered via `enableDarkToggle`.                                                             |
 | parseDetailsAsHTML       | false                | Parses the `cardDetailedText` as HTML.                                                                                                   |
+| responsiveBreakPoint     | 1024                 | Break point at which the timeline changes to `VERTICAL` mode when `VERTICAL_ALTERNATING` is the default mode                             |
 | scrollable               | true                 | Makes the timeline scrollable in `VERTICAL` and `VERTICAL_ALTERNATING` modes.                                                            |
 | showAllCardsHorizontal   | false                | Displays all cards in horizontal mode. By default, only the active card is shown.                                                        |
 | slideItemDuration        | 5000                 | Sets the duration (in milliseconds) that a timeline card is active during a slideshow.                                                   |
 | slideShow                | false                | Enables slideshow control.                                                                                                               |
+| textDensity              | HIGH                 | Configures the amount of text to be displayed in each timeline card. Can be either `HIGH` or `LOW`                                       |
 | textOverlay              | false                | Displays text as an overlay on media elements. Refer to [Text Overlay](#text-overlay-mode) for more info.                                |
 | theme                    |                      | Customizes colors. Refer to [Theme](#theme) for more info.                                                                               |
 | timelinePointDimension   |                      | Defines the dimensions of circular points on the timeline.                                                                               |
 | timelinePointShape       | circle               | Configures the shape of timeline points. Options: circle, square, diamond.                                                               |
 | titleDateFormat          | 'MMM DD, YYYY'       | Formats the date for each timeline item. Supports all [dayjs](https://day.js.org/) formats.                                              |
+| toolbarPosition          | TOP                  | Configures the position of the toolbar. Can be `TOP` or `BOTTOM`                                                                         |
 | uniqueId                 |                      | Used with `noUniqueId` to set a custom unique id for the wrapper.                                                                        |
 | useReadMore              | true                 | Enables or disables the "read more" button. Available if text content on the card is taller than the card itself.                        |
-| verticalBreakPoint       | 768px                | Sets the pixel count below which the timeline will switch to `VERTICAL` mode.                                                            |
 
 ### Mode
 
@@ -483,17 +485,6 @@ Enabling this prop will cause the play button to appear in the timeline control 
 
 > The slideshow can be cancelled by clicking on the stop button in the control panel or by pressing the `ESC` key.
 
-### Outline
-
-With `enableOutline` prop you can enable outline on the timelines and quickly jump to a specific timeline item.
-The outlines are only supported on `VERTICAL` and `VERTICAL_ALTERNATING` modes.
-
-```jsx
-<Chrono items={items} enableOutline />
-```
-
-![media](./readme-assets/outline.png)
-
 ### Item Width
 
 The `itemWidth` prop can be used to set the width of each individual timeline sections. This setting is applicable only for the `HORIZONTAL` mode.
@@ -522,6 +513,8 @@ Use the breakpoint feature to automatically switch the timeline to `VERTICAL` mo
 ### 🎨Theme
 
 Customize colors with the `theme` prop.
+
+> Checkout the documentation for the complete list of available theme properties.
 
 ```jsx
 <Chrono
@@ -652,6 +645,12 @@ pnpm rollup
 
   # run cypress tests
   pnpm cypress:test
+
+  # run cypress tests in headless mode
+  pnpm cypress:headless
+
+  # run cypress tests in quiet mode
+  pnpm cypress:quiet
 ```
 
 ## 🤝Contributing
